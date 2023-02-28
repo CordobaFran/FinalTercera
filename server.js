@@ -10,7 +10,6 @@ const numCPUs = require('os').cpus().length
 // const compression = require('compression')
 
 if (options.MODE == 'CLUSTER' && cluster.isPrimary) {
-
     loggerConsole.info(`Master ${process.pid} started`);
     for (let i = 0; i < numCPUs / 4; i++) {
         cluster.fork()
@@ -27,6 +26,7 @@ if (options.MODE == 'CLUSTER' && cluster.isPrimary) {
         httpServer.listen(PORT, () => {
             loggerConsole.info(`Server Online on Port ${PORT}`)
             loggerConsole.debug(`Worker ${process.pid} started`);
+            options.MODE == 'CLUSTER' ? loggerConsole.info("Mode: Cluster") : loggerConsole.info("Mode: Fork")
         })
     } catch (error) {
         loggerError.error(error);
